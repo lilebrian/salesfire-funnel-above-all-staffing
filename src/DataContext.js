@@ -30,24 +30,26 @@ export function DataProvider({ children }) {
   }, []);
 
   const updateData = async (clientName, month, persona, counts) => {
-    const key = `${clientName}_${month}_${persona}`;
-    const newData = { ...data, [key]: counts };
-    setData(newData);
+  const key = `${clientName}_${month}_${persona}`;
+  const newData = { ...data, [key]: counts };
+  setData(newData);
 
-    // Push to Google Sheet
+  const row = [clientName, month, persona, ...counts];
+
+  try {
     await fetch(API_URL, {
       method: "POST",
-      body: JSON.stringify({
-        clientName,
-        month,
-        persona,
-        counts
-      }),
       headers: {
         "Content-Type": "application/json"
-      }
+      },
+      body: JSON.stringify({
+        data: [row]
+      })
     });
-  };
+  } catch (error) {
+    console.error("Error saving data to NoCodeAPI:", error);
+  }
+};
 
   return (
     <DataContext.Provider value={{ data, updateData }}>
