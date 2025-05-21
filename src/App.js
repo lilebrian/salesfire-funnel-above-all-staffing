@@ -105,7 +105,7 @@ const dropdownStyle = {
 export default function App() {
   const [selectedMonth, setSelectedMonth] = useState("Jan 2025");
   const [selectedPersona, setSelectedPersona] = useState("Operations");
-  const [clientName, setClientName] = useState("Demo Client");
+  const clientName = "AboveAllStaffing";
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#0B111D", color: "white", padding: "2rem" }}>
