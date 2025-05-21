@@ -37,14 +37,7 @@ function Dashboard({ selectedMonth, selectedPersona, clientName, onMonthChange, 
 
       {/* Filter Controls */}
       <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginBottom: "2rem" }}>
-        <input
-          type="text"
-          placeholder="Client Name"
-          value={clientName}
-          onChange={(e) => onClientChange(e.target.value)}
-          style={dropdownStyle}
-        />
-
+       
         <select
           value={selectedMonth}
           onChange={(e) => onMonthChange(e.target.value)}
