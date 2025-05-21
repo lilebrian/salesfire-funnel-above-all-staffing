@@ -111,7 +111,6 @@ export default function App() {
             clientName={clientName}
             selectedMonth={selectedMonth}
             selectedPersona={selectedPersona}
-            onClientChange={setClientName}
             onMonthChange={setSelectedMonth}
             onPersonaChange={setSelectedPersona}
           />
