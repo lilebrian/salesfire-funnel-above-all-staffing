@@ -25,9 +25,10 @@ export default function AdminPanel() {
   };
 
   const handleSave = async () => {
-    await updateData(clientName, selectedMonth, selectedPersona, counts);
-    alert("Data saved to Google Sheet!");
-  };
+  console.log("Saving data:", { clientName, selectedMonth, selectedPersona, counts });
+  await updateData(clientName, selectedMonth, selectedPersona, counts);
+  alert("Data saved to Google Sheet!");
+};
 
   return (
     <div style={{ backgroundColor: "#1D2739", padding: "1.5rem", borderRadius: "1rem", marginBottom: "2rem" }}>
