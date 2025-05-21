@@ -36,13 +36,6 @@ export default function AdminPanel() {
       </h3>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1rem" }}>
-        <input
-          type="text"
-          placeholder="Client Name"
-          value={clientName}
-          onChange={(e) => setClientName(e.target.value)}
-          style={inputStyle}
-        />
 
         <div style={{ display: "flex", gap: "1rem", justifyContent: "space-between" }}>
           <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} style={dropdownStyle}>
