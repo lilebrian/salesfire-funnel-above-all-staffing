@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const DataContext = createContext();
 export const useData = () => useContext(DataContext);
 
-const API_URL = "https://v1.nocodeapi.com/lilebrian/google_sheets/cmzRpffJeyUdgbxY?tabId=Funnel";
+const API_URL = "https://api.sheetbest.com/sheets/88141cba-f544-477b-ba62-a971268e9c4e";
 
 export function DataProvider({ children }) {
   const [data, setData] = useState({});
