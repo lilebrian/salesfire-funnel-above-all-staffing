@@ -1,6 +1,6 @@
 import './index.css';
 import { useState } from 'react';
-import { useData, DataProvider } from './DataContext';
+import { DataProvider } from './DataContext';
 import FunnelVisualizer from './FunnelChart';
 import AdminPanel from './AdminPanel';
 
