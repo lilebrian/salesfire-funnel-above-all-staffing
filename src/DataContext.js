@@ -34,6 +34,11 @@ export function DataProvider({ children }) {
   setData(newData);
 
   const row = [clientName, month, persona, ...counts];
+  const payload = {
+    data: [row]
+  };
+
+  console.log("Sending to NoCodeAPI:", payload);
 
   try {
     await fetch(API_URL, {
@@ -41,9 +46,7 @@ export function DataProvider({ children }) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        data: [row]
-      })
+      body: JSON.stringify(payload)
     });
   } catch (error) {
     console.error("Error saving data to NoCodeAPI:", error);
