@@ -16,7 +16,7 @@ function Dashboard({ selectedMonth, selectedPersona, clientName, onMonthChange, 
   import { DataContext } from "./DataContext";
 
   const key = `${clientName}_${selectedMonth}_${selectedPersona}`;
-  const counts = data[key] || [0, 0, 0, 0, 0, 0];
+  const { data } = useContext(DataContext);
 
   const conversionRates = counts.map((count, i) => {
     if (i === 0) return "";
