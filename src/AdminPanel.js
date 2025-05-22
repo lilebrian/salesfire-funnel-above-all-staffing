@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { DataContext } from "../DataContext";
+import { DataContext } from "./DataContext";
 
 export default function AdminPanel() {
   const {
