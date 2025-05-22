@@ -28,17 +28,24 @@ export function DataProvider({ children }) {
       });
   }, []);
 
-  const updateData = async (clientName, month, persona, counts) => {
+ const updateData = async (clientName, month, persona, counts) => {
   const key = `${clientName}_${month}_${persona}`;
   const newData = { ...data, [key]: counts };
   setData(newData);
 
-  const row = [clientName, month, persona, ...counts];
   const payload = {
-    data: [row]
+    "Client Name": clientName,
+    "Month": month,
+    "Persona": persona,
+    "Outreach": counts[0],
+    "Connections": counts[1],
+    "Replies": counts[2],
+    "Meetings": counts[3],
+    "Proposals": counts[4],
+    "Contracts": counts[5]
   };
 
-  console.log("🔍 Sending to NoCodeAPI Payload:\n", JSON.stringify(payload, null, 2));
+  console.log("🔄 Sending to Sheet.best:", payload);
 
   try {
     await fetch(API_URL, {
@@ -49,7 +56,7 @@ export function DataProvider({ children }) {
       body: JSON.stringify(payload)
     });
   } catch (error) {
-    console.error("Error saving data to NoCodeAPI:", error);
+    console.error("❌ Error saving data:", error);
   }
 };
 
