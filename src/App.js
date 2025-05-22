@@ -15,7 +15,7 @@ const stages = ["Outreach", "Connections", "Replies", "Meetings", "Proposals", "
 function Dashboard({ selectedMonth, selectedPersona, clientName, onMonthChange, onPersonaChange }) {
   const { data } = useContext(DataContext);
   const key = `${clientName}_${selectedMonth}_${selectedPersona}`;
-  const counts = data[key] || [0, 0, 0, 0, 0, 0];
+  const counts = data?.[key] || [0, 0, 0, 0, 0, 0];
 
   const conversionRates = counts.map((count, i) => {
     if (i === 0) return "";
