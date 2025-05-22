@@ -12,7 +12,9 @@ const personas = ["Operations", "Project Management", "HR/Talent Acquisition"];
 const stages = ["Outreach", "Connections", "Replies", "Meetings", "Proposals", "Contracts"];
 
 function Dashboard({ selectedMonth, selectedPersona, clientName, onMonthChange, onPersonaChange, onClientChange }) {
-  const { data } = useData();
+  import { useContext } from "react";
+  import { DataContext } from "./DataContext";
+
   const key = `${clientName}_${selectedMonth}_${selectedPersona}`;
   const counts = data[key] || [0, 0, 0, 0, 0, 0];
 
