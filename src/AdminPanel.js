@@ -1,97 +1,117 @@
-import React, { useState } from 'react';
-import { useData } from './DataContext';
-
-const stages = ["Outreach", "Connections", "Replies", "Meetings", "Proposals", "Contracts"];
-const months = [
-  "Jan 2025", "Feb 2025", "Mar 2025", "Apr 2025", "May 2025", "Jun 2025",
-  "Jul 2025", "Aug 2025", "Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025"
-];
-const personas = ["Operations", "Project Management", "HR/Talent Acquisition"];
+import React, { useContext, useState } from "react";
+import { DataContext } from "../DataContext";
 
 export default function AdminPanel() {
-  const { data, updateData } = useData();
-  const [selectedMonth, setSelectedMonth] = useState("Jan 2025");
-  const [selectedPersona, setSelectedPersona] = useState("Operations");
-  const clientName = "AboveAllStaffing";
+  const {
+    clientName,
+    months,
+    personas,
+    counts,
+    setCounts,
+    selectedMonth,
+    setSelectedMonth,
+    selectedPersona,
+    setSelectedPersona,
+    updateData,
+  } = useContext(DataContext);
 
-  const key = `${clientName}_${selectedMonth}_${selectedPersona}`;
-  const initialCounts = data[key] || [0, 0, 0, 0, 0, 0];
-  const [counts, setCounts] = useState([...initialCounts]);
+  const [weekOf, setWeekOf] = useState("");
 
   const handleChange = (index, value) => {
-    const updated = [...counts];
-    updated[index] = parseInt(value) || 0;
-    setCounts(updated);
+    const newCounts = [...counts];
+    newCounts[index] = parseInt(value) || 0;
+    setCounts(newCounts);
   };
 
   const handleSave = async () => {
-  console.log("Saving data:", { clientName, selectedMonth, selectedPersona, counts });
-  await updateData(clientName, selectedMonth, selectedPersona, counts);
-  alert("Data saved to Google Sheet!");
-};
+    await updateData(clientName, selectedMonth, selectedPersona, counts, weekOf);
+    alert("Data saved to Google Sheet!");
+  };
 
   return (
-    <div style={{ backgroundColor: "#1D2739", padding: "1.5rem", borderRadius: "1rem", marginBottom: "2rem" }}>
-      <h3 style={{ color: "#C44528", textAlign: "center", marginBottom: "1rem" }}>
-        Admin Panel – Update Funnel Data
-      </h3>
+    <div
+      style={{
+        position: "absolute",
+        top: "18rem",
+        left: 0,
+        width: "20rem",
+        padding: "1rem",
+        backgroundColor: "#0B111D",
+        borderRight: "1px solid #2c2c2c",
+        height: "100vh",
+        overflowY: "auto",
+      }}
+    >
+      <h2 className="text-lg font-bold mb-4 text-white">Admin Panel</h2>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1rem" }}>
-
-        <div style={{ display: "flex", gap: "1rem", justifyContent: "space-between" }}>
-          <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} style={dropdownStyle}>
-            {months.map((m) => <option key={m}>{m}</option>)}
-          </select>
-
-          <select value={selectedPersona} onChange={(e) => setSelectedPersona(e.target.value)} style={dropdownStyle}>
-            {personas.map((p) => <option key={p}>{p}</option>)}
-          </select>
-        </div>
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-        {stages.map((stage, i) => (
-          <label key={stage} style={{ display: "flex", flexDirection: "column", color: "white" }}>
-            {stage}
-            <input
-              type="number"
-              value={counts[i]}
-              onChange={(e) => handleChange(i, e.target.value)}
-              style={inputStyle}
-            />
-          </label>
-        ))}
-      </div>
-
-      <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
-        <button
-          onClick={handleSave}
-          style={{
-            backgroundColor: "#C44528",
-            color: "white",
-            border: "none",
-            padding: "0.75rem 2rem",
-            borderRadius: "5px",
-            fontWeight: "bold",
-            cursor: "pointer"
-          }}
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-white">Month</label>
+        <select
+          value={selectedMonth}
+          onChange={(e) => setSelectedMonth(e.target.value)}
+          className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
         >
-          Save
-        </button>
+          {months.map((month) => (
+            <option key={month} value={month}>
+              {month}
+            </option>
+          ))}
+        </select>
       </div>
+
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-white">Week of</label>
+        <input
+          type="text"
+          value={weekOf}
+          onChange={(e) => setWeekOf(e.target.value)}
+          placeholder="e.g. May 20–26"
+          className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1 text-white">Persona</label>
+        <select
+          value={selectedPersona}
+          onChange={(e) => setSelectedPersona(e.target.value)}
+          className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
+        >
+          {personas.map((persona) => (
+            <option key={persona} value={persona}>
+              {persona}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {[
+        "Outreach",
+        "Connections",
+        "Replies",
+        "Meetings",
+        "Proposals",
+        "Contracts",
+      ].map((label, index) => (
+        <div key={label} className="mb-2">
+          <label className="block text-sm font-medium mb-1 text-white">
+            {label}
+          </label>
+          <input
+            type="number"
+            value={counts[index]}
+            onChange={(e) => handleChange(index, e.target.value)}
+            className="w-full p-2 rounded bg-gray-800 border border-gray-600 text-white"
+          />
+        </div>
+      ))}
+
+      <button
+        onClick={handleSave}
+        className="mt-4 w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Save
+      </button>
     </div>
   );
 }
-
-const inputStyle = {
-  padding: "0.5rem",
-  backgroundColor: "#2A3548",
-  color: "white",
-  border: "1px solid #39455D",
-  borderRadius: "5px"
-};
-
-const dropdownStyle = {
-  ...inputStyle,
-  width: "100%"
-};
