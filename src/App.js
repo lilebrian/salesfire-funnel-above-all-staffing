@@ -1,6 +1,6 @@
 import './index.css';
-import { useState } from 'react';
-import { DataProvider } from './DataContext';
+import { useState, useContext } from 'react';
+import { DataProvider, DataContext } from './DataContext';
 import FunnelVisualizer from './FunnelChart';
 import AdminPanel from './AdminPanel';
 
@@ -8,15 +8,14 @@ const months = [
   "Jan 2025", "Feb 2025", "Mar 2025", "Apr 2025", "May 2025", "Jun 2025",
   "Jul 2025", "Aug 2025", "Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025"
 ];
+
 const personas = ["Operations", "Project Management", "HR/Talent Acquisition"];
 const stages = ["Outreach", "Connections", "Replies", "Meetings", "Proposals", "Contracts"];
 
-function Dashboard({ selectedMonth, selectedPersona, clientName, onMonthChange, onPersonaChange, onClientChange }) {
-  import { useContext } from "react";
-  import { DataContext } from "./DataContext";
-
-  const key = `${clientName}_${selectedMonth}_${selectedPersona}`;
+function Dashboard({ selectedMonth, selectedPersona, clientName, onMonthChange, onPersonaChange }) {
   const { data } = useContext(DataContext);
+  const key = `${clientName}_${selectedMonth}_${selectedPersona}`;
+  const counts = data[key] || [0, 0, 0, 0, 0, 0];
 
   const conversionRates = counts.map((count, i) => {
     if (i === 0) return "";
@@ -39,7 +38,6 @@ function Dashboard({ selectedMonth, selectedPersona, clientName, onMonthChange, 
 
       {/* Filter Controls */}
       <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginBottom: "2rem" }}>
-       
         <select
           value={selectedMonth}
           onChange={(e) => onMonthChange(e.target.value)}
