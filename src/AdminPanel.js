@@ -30,16 +30,16 @@ export default function AdminPanel() {
 
   return (
     <div
-      style={{
-        position: "absolute",
-        top: "18rem",
-        left: 0,
-        width: "20rem",
-        padding: "1rem",
-        backgroundColor: "#0B111D",
-        borderRight: "1px solid #2c2c2c",
-        height: "100vh",
-        overflowY: "auto",
+  style={{
+    width: "100%",
+    maxWidth: "20rem",
+    padding: "1rem",
+    backgroundColor: "#0B111D",
+    borderRight: "1px solid #2c2c2c",
+    height: "auto",
+  }}
+>
+
       }}
     >
       <h2 className="text-lg font-bold mb-4 text-white">Admin Panel</h2>
