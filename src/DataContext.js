@@ -38,7 +38,7 @@ export function DataProvider({ children }) {
     data: [row]
   };
 
-  console.log("Sending to NoCodeAPI:", payload);
+  console.log("Sending to NoCodeAPI:", JSON.stringify(payload, null, 2));
 
   try {
     await fetch(API_URL, {
