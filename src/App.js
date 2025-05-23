@@ -1,5 +1,5 @@
 import './index.css';
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { DataProvider, DataContext } from './DataContext';
 import FunnelVisualizer from './FunnelChart';
 import AdminPanel from './AdminPanel';
@@ -13,7 +13,12 @@ const personas = ["Operations", "Project Management", "HR/Talent Acquisition"];
 const stages = ["Outreach", "Connections", "Replies", "Meetings", "Proposals", "Contracts"];
 
 function Dashboard({ selectedMonth, selectedPersona, clientName, onMonthChange, onPersonaChange }) {
-  const { data } = useContext(DataContext);
+  const { data, loadData } = useContext(DataContext);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
   const key = `${clientName}_${selectedMonth}_${selectedPersona}`;
   const counts = data?.[key] || [0, 0, 0, 0, 0, 0];
 
@@ -36,7 +41,6 @@ function Dashboard({ selectedMonth, selectedPersona, clientName, onMonthChange, 
         Sales Funnel Dashboard
       </h2>
 
-      {/* Filter Controls */}
       <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginBottom: "2rem" }}>
         <select
           value={selectedMonth}
@@ -104,9 +108,7 @@ export default function App() {
     <div style={{ minHeight: "100vh", backgroundColor: "#0B111D", color: "white", padding: "2rem" }}>
       <DataProvider>
         <div style={{ display: "flex", gap: "2rem", alignItems: "flex-start", maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ flex: 1, marginTop: "18rem" }}>
-            <AdminPanel />
-          </div>
+          <AdminPanel />
           <Dashboard
             clientName={clientName}
             selectedMonth={selectedMonth}
