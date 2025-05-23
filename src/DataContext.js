@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 
-// 🔁 Replace this with your actual Sheet.best URL
-const API_URL = "https://api.sheetbest.com/sheets/88141cba-f544-477b-ba62-a971268e9c4e";
+// 🔁 Replace with your actual Sheet.best URL
+const API_URL = "https://sheet.best/api/sheets/YOUR-SHEET-ID-HERE";
 
 export const DataContext = createContext();
 
@@ -13,7 +13,7 @@ export const DataProvider = ({ children }) => {
   const [data, setData] = useState({});
 
   const months = [
-    "Jan 2025", "Feb 2025", "Mar  2025", "Apr 2025",
+    "Jan 2025", "Feb 2025", "Mar 2025", "Apr 2025",
     "May 2025", "Jun 2025", "Jul 2025", "Aug 2025",
     "Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025"
   ];
@@ -22,12 +22,9 @@ export const DataProvider = ({ children }) => {
 
   const updateData = async (clientName, month, persona, counts, weekOf) => {
     const key = `${clientName}_${month}_${persona}`;
-
-    // ✅ This updates the local state so the dashboard updates in real time
     const newData = { ...data, [key]: counts };
     setData(newData);
 
-    // ✅ This sends data to your Google Sheet via Sheet.best
     const payload = {
       "Client Name": clientName,
       "Month": month,
@@ -38,7 +35,7 @@ export const DataProvider = ({ children }) => {
       "Replies": counts[2],
       "Meetings": counts[3],
       "Proposals": counts[4],
-      "Contracts": counts[5],
+      "Contracts": counts[5]
     };
 
     console.log("🔄 Sending to Sheet.best:", payload);
@@ -59,6 +56,39 @@ export const DataProvider = ({ children }) => {
     }
   };
 
+  const loadData = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const rows = await response.json();
+
+      const aggregated = {};
+
+      rows.forEach((row) => {
+        const key = `${row["Client Name"]}_${row["Month"]}_${row["Persona"]}`;
+
+        const counts = [
+          parseInt(row["Outreach"] || 0),
+          parseInt(row["Connections"] || 0),
+          parseInt(row["Replies"] || 0),
+          parseInt(row["Meetings"] || 0),
+          parseInt(row["Proposals"] || 0),
+          parseInt(row["Contracts"] || 0)
+        ];
+
+        if (!aggregated[key]) {
+          aggregated[key] = counts;
+        } else {
+          aggregated[key] = aggregated[key].map((val, i) => val + counts[i]);
+        }
+      });
+
+      setData(aggregated);
+      console.log("📊 Aggregated data:", aggregated);
+    } catch (error) {
+      console.error("❌ Error loading data:", error);
+    }
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -72,8 +102,9 @@ export const DataProvider = ({ children }) => {
         counts,
         setCounts,
         updateData,
+        loadData,
         data,
-        setData,
+        setData
       }}
     >
       {children}
